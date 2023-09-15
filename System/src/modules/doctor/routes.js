@@ -3,15 +3,19 @@ const express = require('express');
 const docRouter = express.Router();
 
 const {
-  addDoctorMiddleWare, docValidations
+  addDoctorMiddleWare, docSignUpValidations,
+  signInDoctorMiddleWare, docSignInValidations,
+  setAvailabilitySlotsMiddleWare
 } = require('./middleware');
 
 const {
-  addDoctor
+  addDoctor,
+  doctorSignIn,
+  setAvailabilitySlots
 } =  require('./controllers');
 
-docRouter.post('/addDoctor', docValidations(), addDoctorMiddleWare, addDoctor);
+docRouter.post('/docSignUp', docSignUpValidations(), addDoctorMiddleWare, addDoctor);
+docRouter.get('/docSignIn', docSignInValidations(), signInDoctorMiddleWare, doctorSignIn);
+docRouter.post('./setAvailabilitySlots', setAvailabilitySlotsMiddleWare, setAvailabilitySlots);
 
-module.exports = {
-  docRouter
-};
+module.exports = docRouter;
