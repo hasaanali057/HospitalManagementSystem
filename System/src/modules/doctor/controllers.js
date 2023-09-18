@@ -121,7 +121,12 @@ const WriteTest = async (req, res) => {
 
 const deleteAvailabilitySlots = async (req, res) => {
   try {
-    
+    await Availability.destroy({
+      where: {
+        availabilitySlot_ID: req.body.availabilitySlot_ID
+      }
+    })
+    return res.status(200).send('Ok');
   } catch (error) {
     return res.status(500).send(error.message);
   }
