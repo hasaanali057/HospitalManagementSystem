@@ -108,6 +108,13 @@ const setAvailabilitySlotsMiddleWare = async (req, res, next) => {
   }
 }
 
+/**
+ * doctor writes test for patient
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const writeTestMiddleWare = async (req, res, next) => {
   try {
     if(req.user.isDoctor){
@@ -120,6 +127,13 @@ const writeTestMiddleWare = async (req, res, next) => {
   }
 }
 
+/**
+ * delete doctor availabilty slots
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const deleteAvailabilitySlotsMiddleWare = async (req, res, next) => {
   try {
     if(req.user.isDoctor){
@@ -131,6 +145,7 @@ const deleteAvailabilitySlotsMiddleWare = async (req, res, next) => {
     return res.status(500).send(error.message)
   }
 }
+
 module.exports = {
   addDoctorMiddleWare, docSignUpValidations,
   signInDoctorMiddleWare, docSignInValidations,

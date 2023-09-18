@@ -119,6 +119,12 @@ const WriteTest = async (req, res) => {
   }
 }
 
+/**
+ * doctor deletes availablity slot controller function
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const deleteAvailabilitySlots = async (req, res) => {
   try {
     await Availability.destroy({

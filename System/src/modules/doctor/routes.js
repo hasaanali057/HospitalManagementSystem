@@ -5,6 +5,7 @@ const docRouter = express.Router();
 // authorization middleWare
 const { auth } = require('../AuthorizationMiddleWare/authMiddleware');
 
+// acquiring middleware functions for doctor module
 const {
   addDoctorMiddleWare, docSignUpValidations,
   signInDoctorMiddleWare, docSignInValidations,
@@ -13,6 +14,7 @@ const {
   writeTestMiddleWare
 } = require('./middleware');
 
+// acquiring controller functions for doctor module.
 const {
   addDoctor,
   doctorSignIn,
