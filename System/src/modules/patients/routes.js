@@ -2,7 +2,7 @@ const express = require('express');
 
 const patientRouter = express.Router();
 
-const auth = require('../AuthorizationMiddleWare/authMiddleware');
+const { auth } = require('../AuthorizationMiddleWare/authMiddleware');
 
 // middlewares
 const {
