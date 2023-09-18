@@ -2,6 +2,9 @@ const express = require('express');
 
 const patientRouter = express.Router();
 
+const auth = require('../AuthorizationMiddleWare/authMiddleware');
+
+// middlewares
 const {
   patientSignUpMiddleWare,
   patientSignInMiddleWare,
@@ -9,6 +12,7 @@ const {
   deleteAppointmentMiddleware
 } = require('./middleware')
 
+// controllers
 const {
   patientSignUp,
   patientSignIn,
@@ -16,9 +20,10 @@ const {
   deleteScheduleAppointment
 } = require('./controllers');
 
+// API routes
 patientRouter.post('/addPatient',patientSignUpMiddleWare, patientSignUp);
 patientRouter.get('/signInPatient', patientSignInMiddleWare, patientSignIn);
-patientRouter.post('/scheduleAppointment', scheduleAppointmentMiddleware, scheduleAppointment);
-patientRouter.delete('/deleteAppointment', deleteAppointmentMiddleware, deleteScheduleAppointment);
+patientRouter.post('/scheduleAppointment', auth, scheduleAppointmentMiddleware, scheduleAppointment);
+patientRouter.delete('/deleteAppointment', auth, deleteAppointmentMiddleware, deleteScheduleAppointment);
 
 module.exports = patientRouter;

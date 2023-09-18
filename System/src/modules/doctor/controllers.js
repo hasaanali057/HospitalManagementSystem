@@ -88,7 +88,7 @@ const setAvailabilitySlots = async (req, res) => {
       Day: Day,
       TimeFrom: TimeFrom,
       TimeTo: TimeTo,
-      Doctor_ID: 7
+      Doctor_ID: Doctor_ID
     });
     return res.status(200).send('Slot Added Successfuly.');
   } catch (error) {
