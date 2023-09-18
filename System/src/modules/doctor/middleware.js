@@ -1,14 +1,15 @@
 
-const jwt = require("jsonwebtoken");
-
+// for form validations
 const {
   check
 } = require('express-validator');
 
+// verifies the validations and returns errors if any
 const {
   validationFunction
 } = require ('../../../config/common/validationHandler');
 
+// validates the Doctor's data at signUp
 const docSignUpValidations = () => {
   return[
     check('FirstName').notEmpty().withMessage('First Name is required.')
@@ -31,6 +32,13 @@ const docSignUpValidations = () => {
   ]    
 }
 
+/**
+ * Doc SignUp MiddleWare Fucntion
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const addDoctorMiddleWare = async (req, res, next) => {
   let errormessages = [];
 
@@ -44,6 +52,7 @@ const addDoctorMiddleWare = async (req, res, next) => {
   }
 }
 
+// validations at signIn time.
 const docSignInValidations = () => {
   return[
     check('Email').notEmpty().withMessage('Email Required')
@@ -53,6 +62,13 @@ const docSignInValidations = () => {
   ]    
 }
 
+/**
+ * Doc SignIn MiddleWare Fucntion
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const signInDoctorMiddleWare = async (req, res, next) => {
   // const token = req.header('doc-auth-token');
   // if(!token) return res.status(401).send('Access Denied. No token provided');
@@ -71,20 +87,54 @@ const signInDoctorMiddleWare = async (req, res, next) => {
   }
 }
 
+/**
+ * Doc Sets Availability Slots MiddleWare Fucntion
+ * It verifies if the doc is valid or not
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const setAvailabilitySlotsMiddleWare = async (req, res, next) => {
-  // const token = req.header('doc-auth-token');
-  // if(!token) return res.status(400).send('Not Authorized.');
-
-  // try {
-  //   jwt.verify(token, process.env.JWTKEY)
-  // } catch (error) {
-  //   return res.status(400).send('Not Authorized. Invalid credential Pass.');  
-  // }
-  next();
+  
+  try {
+    if (req.user.isDoctor){
+      return next();
+    }else{
+      return res.status(403).send('Unauthorized Access.')
+    }
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
 }
 
+const writeTestMiddleWare = async (req, res, next) => {
+  try {
+    if(req.user.isDoctor){
+      return next();
+    }else{
+      return res.status('Unauthorized Access.');
+    }
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+const deleteAvailabilitySlotsMiddleWare = async (req, res, next) => {
+  try {
+    if(req.user.isDoctor){
+      return next();
+    }else{
+      return res.status(401).send('Unauthorized Access.')
+    }
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
 module.exports = {
   addDoctorMiddleWare, docSignUpValidations,
   signInDoctorMiddleWare, docSignInValidations,
-  setAvailabilitySlotsMiddleWare
+  setAvailabilitySlotsMiddleWare,
+  deleteAvailabilitySlotsMiddleWare,
+  writeTestMiddleWare
 }

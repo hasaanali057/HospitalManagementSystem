@@ -1,22 +1,17 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define('appointment', {
-    Doctor_ID: {
-      type:  DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false
-    },
-    Patient_ID: {
+    Appointment_ID: {
       type:  DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
     Day: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.STRING,
       allowNull: false
     },
     Time: {
-      type: DataTypes.TIME,
+      type: DataTypes.STRING,
       allowNull: false
     }
     

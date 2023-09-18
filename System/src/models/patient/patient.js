@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     Password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    isPatient: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   },{
     freezeTableName:true,

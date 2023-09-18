@@ -7,13 +7,13 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement:true
     },
     Day: {
-      type: DataTypes.DATEONLY
+      type: DataTypes.STRING
     },
     TimeFrom: {
-      type: DataTypes.TIME
+      type: DataTypes.STRING
     },
     TimeTo: {
-      type: DataTypes.TIME
+      type: DataTypes.STRING
     }
     
   },{

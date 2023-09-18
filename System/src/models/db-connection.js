@@ -48,6 +48,16 @@ Appointment.belongsTo(Patient, {
   targetKey: 'Patient_ID',
 });
 
+Doctor.hasMany(LabTest, {
+  foreignKey: 'Doctor_ID',
+  targetKey: 'Doctor_ID'
+});
+
+LabTest.belongsTo(Doctor, {
+  foreignKey: 'Doctor_ID',
+  targetKey: 'Doctor_ID',
+});
+
 Doctor.hasMany(Availability, {
   foreignKey: 'Doctor_ID',
   targetKey: 'Doctor_ID'

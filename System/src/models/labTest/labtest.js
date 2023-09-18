@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    Testime: {
+    TesTtime: {
       type: DataTypes.TIME,
       allowNull: false
     },
     Priority: {
       type: DataTypes.STRING
     },
-    ExpectedResult: {
-      type: DataTypes.DATE
+    ExpectedResultTime: {
+      type: DataTypes.STRING
     },
     TestPrice: {
       type: DataTypes.INTEGER

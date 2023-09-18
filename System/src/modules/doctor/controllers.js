@@ -1,5 +1,5 @@
 // aquiring Doctor Model
-const { models: { Doctor, Availability } } = require('../../models/db-connection');
+const { models: { Doctor, Availability, LabTest } } = require('../../models/db-connection');
 
 // aquiring bcrypt for password security
 const bcrypt = require('bcrypt');
@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 
 /**
  * Adding Doctor's details to DataBase
+ * Doctor SignUp Controller
  * @param : req
  * @param : res
  */
@@ -32,7 +33,9 @@ const addDoctor = async (req, res) => {
         Username: req.body.Username,
         Password: await bcrypt.hash(req.body.Password, 10)
       });
-      return res.status(200).send('Sign Up Successful.')
+      const token = jwt.sign({id:  docObject.Doctor_ID, Email: docObject.Email, isDoctor: docObject.isDoctor}, process.env.JWTKEY);
+      console.log(token)
+      return res.status(200).header('x-auth-token', token).send('OK.');
     }else{
       return res.status(402).send('User Already Exists.');
     } 
@@ -42,9 +45,10 @@ const addDoctor = async (req, res) => {
 }
 
 /**
- * Authenticating Doctor's details from DataBase
- * @param : req
- * @param : res
+ * Authenticating Doctor's details from DataBase and Signing In
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
  */
 const doctorSignIn = async (req, res) => {
   try {
@@ -55,7 +59,8 @@ const doctorSignIn = async (req, res) => {
     })
     const flag = await bcrypt.compare(req.body.Password, doctor.Password)
     if(doctor && flag){
-      return res.status(200).send('SignIn Successful.');
+      const token = jwt.sign({id:  doctor.Doctor_ID, isDoctor: doctor.isDoctor}, process.env.JWTKEY);
+      return res.status(200).header('x-auth-token').send('OK');
     }else{
       return res.status(400).send('invalid Credentials');
     }
@@ -64,6 +69,12 @@ const doctorSignIn = async (req, res) => {
   }
 }
 
+/**
+ * setting weather a doc is available at a time slot
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const setAvailabilitySlots = async (req, res) => {
   const {
     Day,
@@ -71,21 +82,56 @@ const setAvailabilitySlots = async (req, res) => {
     TimeTo,
     Doctor_ID
   } = req.body;
+  console.log('availability controller here.');
   try {
     await Availability.create({
       Day: Day,
       TimeFrom: TimeFrom,
       TimeTo: TimeTo,
-      Doctor_ID: Doctor_ID
+      Doctor_ID: 7
     });
-    return res.status(200).send('Time Added Successfuly.')
+    return res.status(200).send('Slot Added Successfuly.');
   } catch (error) {
-    return res.status(500).send('Internal Server Error.')
+    return res.status(500).send(error.message);
   }
 }
 
+/**
+ * Doc Writes Tests for patients
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const WriteTest = async (req, res) => {
+  try {
+    await LabTest.create({
+      TestName: req.body.TestName,
+      TestTime: req.body.TestTime,
+      Priority: req.body.Priority,
+      ExpectedResultTime: req.body.ExpectedResultTime,
+      TestPrice: req.body.TestPrice,
+      Patient_ID: req.body.Patient_ID,
+      Doctor_ID: req.body.Doctor_ID
+    })
+    return res.status(200).send('OK');
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+const deleteAvailabilitySlots = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+// exporting controllers
 module.exports ={
   addDoctor,
   doctorSignIn,
-  setAvailabilitySlots
+  setAvailabilitySlots,
+  deleteAvailabilitySlots,
+  WriteTest
 }
