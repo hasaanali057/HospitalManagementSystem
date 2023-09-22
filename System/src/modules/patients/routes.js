@@ -6,8 +6,8 @@ const { auth } = require('../AuthorizationMiddleWare/authMiddleware');
 
 // middlewares
 const {
-  patientSignUpMiddleWare,
-  patientSignInMiddleWare,
+  patientSignUpMiddleWare, patientSignUpValidations,
+  patientSignInMiddleWare, patientSignInValidations,
   scheduleAppointmentMiddleware,
   deleteAppointmentMiddleware
 } = require('./middleware')
@@ -21,8 +21,8 @@ const {
 } = require('./controllers');
 
 // API routes
-patientRouter.post('/addPatient',patientSignUpMiddleWare, patientSignUp);
-patientRouter.get('/signInPatient', patientSignInMiddleWare, patientSignIn);
+patientRouter.post('/addPatient', patientSignUpValidations(), patientSignUpMiddleWare, patientSignUp);
+patientRouter.get('/signInPatient', patientSignInValidations(), patientSignInMiddleWare, patientSignIn);
 patientRouter.post('/scheduleAppointment', auth, scheduleAppointmentMiddleware, scheduleAppointment);
 patientRouter.delete('/deleteAppointment', auth, deleteAppointmentMiddleware, deleteScheduleAppointment);
 

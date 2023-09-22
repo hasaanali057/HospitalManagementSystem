@@ -2,9 +2,11 @@
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define('appointment', {
     Appointment_ID: {
-      type:  DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      autoIncrement:true,
+      allowNull:false,
+      defaultValue: 1
     },
     Day: {
       type: DataTypes.STRING,

@@ -35,7 +35,7 @@ const addDoctor = async (req, res) => {
       });
       const token = jwt.sign({id:  docObject.Doctor_ID, Email: docObject.Email, isDoctor: docObject.isDoctor}, process.env.JWTKEY);
       console.log(token)
-      return res.status(200).header('x-auth-token', token).send('OK.');
+      return res.status(200).header('x-auth-token', token).send(token);
     }else{
       return res.status(402).send('User Already Exists.');
     } 
@@ -60,7 +60,7 @@ const doctorSignIn = async (req, res) => {
     const flag = await bcrypt.compare(req.body.Password, doctor.Password)
     if(doctor && flag){
       const token = jwt.sign({id:  doctor.Doctor_ID, isDoctor: doctor.isDoctor}, process.env.JWTKEY);
-      return res.status(200).header('x-auth-token').send('OK');
+      return res.status(200).header('x-auth-token', token).send(token);
     }else{
       return res.status(400).send('invalid Credentials');
     }
@@ -88,7 +88,7 @@ const setAvailabilitySlots = async (req, res) => {
       Day: Day,
       TimeFrom: TimeFrom,
       TimeTo: TimeTo,
-      Doctor_ID: Doctor_ID
+      Doctor_ID: req.user.id
     });
     return res.status(200).send('Slot Added Successfuly.');
   } catch (error) {
